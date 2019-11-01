@@ -7,7 +7,7 @@
 
 inc = include_directories('.')
 
-encoder = library('encoder', sources : ['HCNode.hpp', 'HCTree.cpp', 'HCTree.hpp'])
+encoder = library('encoder', sources : ['HCTree.cpp'], dependencies: [bit_input_stream_dep, bit_output_stream_dep])
 
 encoder_dep = declare_dependency(include_directories : inc, 
 					  link_with: encoder)
