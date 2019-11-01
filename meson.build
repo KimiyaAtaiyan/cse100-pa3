@@ -1,7 +1,9 @@
 project('pa3_Huffman_Encoding', 'cpp',
 		version : '0.0.1',
 		default_options : ['warning_level=3',
-			'b_coverage=true', 'cpp_std=c++14'])
+			         'b_coverage=true',
+                                 'cpp_std=c++14'])
+
 
 
 # === src dependencies ===
@@ -9,17 +11,15 @@ project('pa3_Huffman_Encoding', 'cpp',
 subdir('src')
 
 
-
 # === test dependencies ===
 gtest_proj = subproject('gtest')
-gtest_dep = gtest_proj.get_variable("gtest_main_dep')
-
+gtest_dep = gtest_proj.get_variable('gtest_main_dep')
 if not gtest_dep.found()
   error('MESON_SKIP_TEST: gtest not installed.')
 endif
-
 # === end test dependencies ===
 subdir('test')
+
 
 # === custom commands ===
 run_target('cov', 
@@ -29,6 +29,6 @@ run_target('clang_tidy',
 	command : ['./build_scripts/tidy.sh'])
 
 run_target('cppcheck', command : ['cppcheck',
-	'--enable=all', '--std=c++14', '--error-exitcode=1', '--suppress=missingInclude', 'src', 'test'])
-
+	'--enable=all', '--std=c++14', '--error-exitcode=1', '--suppress=missingInclude',
+        'src', 'test'])
 # === end custom commands ===
