@@ -15,11 +15,22 @@
 
 using namespace std;
 
+
+
 /** TODO: class header */
 class HCTree {
   private:
     HCNode* root;            // the root of HCTree
     vector<HCNode*> leaves;  // a vector storing pointers to all leaf HCNodes
+
+    typedef priority_queue< HCNode*, vector<HCNode*>, HCNodePtrComp> pq;
+
+
+    /*Helper Function*/
+    void buildHelper(pq& myQueue);
+
+    /*Helper Function encoding*/
+    bool encodeHelper(HCNode* curr, string& binString, byte symbol);
 
   public:
     /* TODO: add function header and implement */

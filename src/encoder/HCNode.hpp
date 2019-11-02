@@ -1,7 +1,8 @@
 /**
- * TODO: file header
- *
- * Author:
+ * Author: Kimiya Ataiyan, Meghana Sridhar
+ * PID: A15753878, A1329951
+ * Date: 11/1/19
+ * Filename: src/encoder/HDNode.hpp
  */
 #ifndef HCNODE_HPP
 #define HCNODE_HPP
@@ -18,8 +19,8 @@ class HCNode {
   public:
     unsigned int count;  // the freqency of the symbol
     byte symbol;         // byte in the file we're keeping track of
-    HCNode* c0;          // pointer to '0' child
-    HCNode* c1;          // pointer to '1' child
+    HCNode* c0;          // pointer to '0' child -- left 
+    HCNode* c1;          // pointer to '1' child -- right
     HCNode* p;           // pointer to parent
 
     /* Constructor that initialize a HCNode */
@@ -40,7 +41,14 @@ ostream& operator<<(ostream& stm, const HCNode& n) {
  * has higher prioruty.
  */
 struct HCNodePtrComp {
-    /* TODO */
-    bool operator()(HCNode*& lhs, HCNode*& rhs) const { return false; }
+
+    bool operator()(HCNode*& lhs, HCNode*& rhs) const { 
+    
+    	if(lhs->count != rhs->count){
+		return lhs->count > rhs->count;
+	}
+	return lhs->symbol > rhs->symbol;
+    
+    }
 };
 #endif  // HCNODE_HPP
