@@ -44,16 +44,21 @@ TEST_F(SimpleHCTreeFixture, TEST_DECODE) {
     ASSERT_EQ(tree.decode(is), 'b');
 }
 
+TEST_F(SimpleHCTreeFixture, TEST_DECODE_TREE2){
+
+	istringstream is("001");
+	ASSERT_EQ(tree2.decode(is), 'h');
+}
 
 TEST_F( SimpleHCTreeFixture, TEST_ENCODE_TREE2){
 	ostringstream os;
-	tree.encode('a', os);
-	ASSERT_EQ(os.str(), "0000");
+	tree2.encode('a', os);
+	ASSERT_EQ(os.str(), "11");
 }
 
 TEST_F(SimpleHCTreeFixture, TEST_ENCODE_TREE2_2){
 	ostringstream os;
-	tree.encode('c', os);
-	ASSERT_EQ(os.str(), "001");
+	tree2.encode('c', os);
+	ASSERT_EQ(os.str(), "10");
 }
 

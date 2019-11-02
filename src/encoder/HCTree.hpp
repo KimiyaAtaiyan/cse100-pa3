@@ -15,7 +15,7 @@
 
 using namespace std;
 
-
+const int size_vec = 256;
 
 /** TODO: class header */
 class HCTree {
@@ -30,11 +30,14 @@ class HCTree {
     void buildHelper(pq& myQueue);
 
     /*Helper Function encoding*/
-    bool encodeHelper(HCNode* curr, string& binString, byte symbol);
+//    bool encodeHelper(HCNode* curr, string& binString, byte symbol);
 
   public:
     /* TODO: add function header and implement */
-    HCTree() {}
+    HCTree() {
+    	root = nullptr;
+   	leaves = vector<HCNode*>(size_vec); 
+    }
 
     /* TODO: add function header */
     ~HCTree();

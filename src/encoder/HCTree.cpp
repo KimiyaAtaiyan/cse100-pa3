@@ -4,9 +4,13 @@
  * Author:
  */
 #include "HCTree.hpp"
+#include <ostream>
+#include <string>
+#include <bits/stdc++.h>
+
 
 HCTree::~HCTree() {
-	root = nullptr;
+
 }
 
 void HCTree::build(const vector<unsigned int>& freqs) {	
@@ -17,9 +21,13 @@ void HCTree::build(const vector<unsigned int>& freqs) {
 	for(int i =0 ;i < freqs.size(); i++){
 
 		if(freqs[i] != 0){
-
-			myQueue.push(new HCNode(freqs[i], (byte)i, nullptr, nullptr, nullptr));
+			
+			HCNode* newNode = new HCNode(freqs[i], (byte)i, nullptr,nullptr,nullptr);
+			myQueue.push(newNode);
+			leaves[i] = newNode;
 		}
+
+
 	}
 
 	//call helper function to build tree
@@ -36,14 +44,14 @@ void HCTree::buildHelper(pq& myQueue){
 	}
 
 
-	HCNode* leftNode = myQueue.top();
+	HCNode* child0 = myQueue.top();
 	myQueue.pop();
-	HCNode * rightNode = myQueue.top();
+	HCNode * child1 = myQueue.top();
 	myQueue.pop();
 
-	HCNode* parentNode = new HCNode( leftNode->count + rightNode->count, rightNode->symbol, leftNode, rightNode, nullptr);
-	leftNode->p = parentNode;
-	rightNode->p = parentNode;
+	HCNode* parentNode = new HCNode( child0->count + child1->count, child1->symbol, child0, child1, nullptr);
+	child0->p = parentNode;
+	child1->p = parentNode;
 
 	//push parent node back to queue
 	myQueue.push(parentNode);
@@ -55,6 +63,7 @@ void HCTree::buildHelper(pq& myQueue){
 	return;
 
 }
+
 /* TODO */
 void HCTree::encode(byte symbol, BitOutputStream& out) const {}
 
@@ -65,48 +74,77 @@ void HCTree::encode(byte symbol, BitOutputStream& out) const {}
 /* TODO */
 void HCTree::encode(byte symbol, ostream& out) const {
 
-	HCNode* curr = root;
+
+	//use leaves vector to recurse up the tree, reverse found string
+	HCNode* curr = leaves[(int)symbol];
 	string binString="";
-	bool symbolFound = encodeHelper(curr, binString, symbol);
 
-	//write to outstream if symbol found 
-	if(symbolFound){
+	while(curr != root){
+		
+		//check if current is left child
+		if( curr == curr->p->c0){
+			//append 0 going left
+			binString.append("0");
+			curr = curr->p;
+		}
+		else if(curr = curr->p->c1){
+			//append 1 going right
+			binString.append("1");
+			curr = curr->p;
+		}
+	}
 
-		out.write(binString, binString.length());
+	//reverse string 
+	reverse(binString.begin(), binString.end());
+
+	for(int i = 0; i < binString.length(); i++){
+
+		out.put(binString[i]);
 	}
 
 	return;
 }
 
-bool HCTree::encodeHelper( HCNode* curr, string& binString, byte symbol){
 
-	if(curr == nullptr){
-		return false;
+
+/* TODO */
+byte HCTree::decode(BitInputStream& in) const { 
+	return ' ';	
+}
+
+/* TODO */
+byte HCTree::decode(istream& in) const { 
+	
+	if(root == nullptr){
+		return NULL;
 	}
 
-	if(symbol < curr->symbol){
+	HCNode* curr = root;
+	byte retSymbol = root->symbol;
+	char character = (char)in.get();
+	bool found = false; //if s
 
-		//append 0 going left
-		binString.append("0");
-		encodeHelper(curr->c0, binString, symbol);
-	}
-	else if( symbol > curr->symbol){
 
-		binString.append("1");
-		encodeHelper(curr->c1, binString, symbol);
-	}
-	else{
-		if(curr->symbol == symbol){
-
-			return true;
+	//read in the string from in 
+	while(curr != nullptr){
+		
+		if((int)character != -1){
+			if(character == '0'){
+				curr = curr->c0;
+				retSymbol = curr->symbol;
+			}
+			else{
+				curr = curr->c1;
+				retSymbol = curr->symbol;
+			}
+			character = (char)in.get();
 		}
-		return false;
-
+		else{
+			break;
+		}
 	}
+	
+	
+	return retSymbol;
 
 }
-/* TODO */
-byte HCTree::decode(BitInputStream& in) const { return ' '; }
-
-/* TODO */
-byte HCTree::decode(istream& in) const { return ' '; }
