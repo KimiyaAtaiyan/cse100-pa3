@@ -1,15 +1,20 @@
 /**
- * Aut
- *
+ * File Name: HCTree.cpp
  * Author:
+ * PIDs: 
+ * Description: 
+ * Sources of Help: 
  */
 #include "HCTree.hpp"
 #include <ostream>
 #include <string>
+//#include <vector>
 #include <bits/stdc++.h>
 
 
 HCTree::~HCTree() {
+  
+  deleteAll(root);
 
 }
 
@@ -74,10 +79,13 @@ void HCTree::encode(byte symbol, BitOutputStream& out) const {}
 /* TODO */
 void HCTree::encode(byte symbol, ostream& out) const {
 
-
 	//use leaves vector to recurse up the tree, reverse found string
 	HCNode* curr = leaves[(int)symbol];
 	string binString="";
+
+	if(curr == nullptr){
+		return;
+	}
 
 	while(curr != root){
 		
@@ -120,13 +128,11 @@ byte HCTree::decode(istream& in) const {
 	}
 
 	HCNode* curr = root;
-	byte retSymbol = root->symbol;
+	byte retSymbol = '\0';
 	char character = (char)in.get();
-	bool found = false; //if s
-
 
 	//read in the string from in 
-	while(curr != nullptr){
+	while(curr != nullptr && (int) character != -1){
 		
 		if((int)character != -1){
 			if(character == '0'){
@@ -142,9 +148,33 @@ byte HCTree::decode(istream& in) const {
 		else{
 			break;
 		}
-	}
-	
-	
+	}	
 	return retSymbol;
 
 }
+
+
+/*
+ * Function name: deleteAll()
+ * Function Prototype: void deleteAll(HCNode* curr)
+ * Description: Deletes all memory allocated on heap
+ * Parameters: Node* curr - current node to begin deleting from
+ * Return: none
+ */
+void HCTree::deleteAll(HCNode* curr){
+
+  //Checks if curr is null
+  if(curr == nullptr){
+    return;
+  }
+  //Checks if child is null
+  if (curr != nullptr){
+    //Deletes all left children
+    deleteAll(curr->c0);
+    //Deletes all right children
+    deleteAll(curr->c1);
+    //Deletes node
+    delete curr;
+  } 
+}
+

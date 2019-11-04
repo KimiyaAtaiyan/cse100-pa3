@@ -29,9 +29,6 @@ class HCTree {
     /*Helper Function*/
     void buildHelper(pq& myQueue);
 
-    /*Helper Function encoding*/
-//    bool encodeHelper(HCNode* curr, string& binString, byte symbol);
-
   public:
     /* TODO: add function header and implement */
     HCTree() {
@@ -56,6 +53,9 @@ class HCTree {
 
     /* TODO: add function header */
     byte decode(istream& in) const;
+
+    /*TODO: add function header */
+    void deleteAll(HCNode* curr);
 };
 
 #endif  // HCTREE_HPP

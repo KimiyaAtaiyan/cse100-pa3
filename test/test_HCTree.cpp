@@ -12,6 +12,7 @@ class SimpleHCTreeFixture : public ::testing::Test {
   protected:
     HCTree tree;
     HCTree tree2;
+    HCTree tree3;
 
   public:
     SimpleHCTreeFixture() {
@@ -30,6 +31,13 @@ class SimpleHCTreeFixture : public ::testing::Test {
 	freqs2['g'] = 1;
 	freqs2['h'] = 2;
 	tree2.build(freqs2);
+        
+	vector<unsigned int> freqs3(256);
+        freqs3['a'] = 2;
+        freqs3['b'] = 4;
+        freqs3['j'] = 2;
+        freqs3['c'] = 4;
+        tree3.build(freqs3);
     }
 };
 
@@ -62,3 +70,26 @@ TEST_F(SimpleHCTreeFixture, TEST_ENCODE_TREE2_2){
 	ASSERT_EQ(os.str(), "10");
 }
 
+TEST_F( SimpleHCTreeFixture, TEST_ENCODE_TREE3){
+	ostringstream os;
+	tree3.encode('a', os);
+	ASSERT_EQ(os.str(), "00");
+
+	ostringstream os2;
+	tree3.encode('c', os2);
+	ASSERT_EQ(os2.str(), "11");
+	
+	ostringstream os3;
+	tree3.encode('b', os3);
+	ASSERT_EQ(os3.str(), "10");
+
+	ostringstream os4;
+	tree3.encode('j', os4);
+	ASSERT_EQ(os4.str(), "01");
+}
+
+TEST_F( SimpleHCTreeFixture, TEST_DELETE){
+	HCTree* tree4;
+	tree4 = new HCTree();
+	delete tree4;
+}
