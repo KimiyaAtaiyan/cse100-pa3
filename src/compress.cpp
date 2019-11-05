@@ -31,6 +31,7 @@ void pseudoCompression(string inFileName, string outFileName) {
 	while(1){
 
 		val = in.get();
+
 		if(in.eof()){
 			break;
 		}
@@ -43,10 +44,6 @@ void pseudoCompression(string inFileName, string outFileName) {
 		outFile << frequencies[i] << endl;
 
 	}
-	cout << frequencies[97] << endl;
-	cout << frequencies[98] << endl;	
-	cout << frequencies[99] << endl;
-	cout << frequencies[100] << endl;
 
 	//build the tree
 	tree.build(frequencies);

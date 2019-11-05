@@ -27,6 +27,7 @@ void pseudoDecompression(string inFileName, string outFileName) {
 
 	while(1){
 
+
 		val = in.get();
 
 		if(count == 256){
@@ -54,7 +55,7 @@ void pseudoDecompression(string inFileName, string outFileName) {
 			break;
 		}
 		
-		outFile.put(tree.decode(in));
+		outFile << tree.decode(in);
 	}
 
 
