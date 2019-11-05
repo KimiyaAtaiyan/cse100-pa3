@@ -62,21 +62,13 @@ void HCTree::buildHelper(pq& myQueue){
 	myQueue.push(parentNode);
 
 
-	//recursive call 
+	//recursive call
 	buildHelper(myQueue);
 
 	return;
 
 }
 
-/* TODO */
-void HCTree::encode(byte symbol, BitOutputStream& out) const {}
-
-
-
-
-
-/* TODO */
 void HCTree::encode(byte symbol, ostream& out) const {
 
 	//use leaves vector to recurse up the tree, reverse found string
@@ -84,6 +76,11 @@ void HCTree::encode(byte symbol, ostream& out) const {
 	string binString="";
 
 	if(curr == nullptr){
+		return;
+	}
+
+	if(curr == root){
+		out.put('0');
 		return;
 	}
 
