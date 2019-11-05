@@ -25,41 +25,38 @@ void pseudoCompression(string inFileName, string outFileName) {
 	ifstream in;
 
 	//open files
-	in.open(inFileName);
-	outFile.open(outFileName , ios::binary);
+	in.open(inFileName, ios::binary);
+	outFile.open(outFileName);
 
 	while(1){
-	
-	      //read symbols from file on at a time
-	      //symbol = (unsigned char)in.get();
-	      val = in.get();
-		
-	      if(in.eof()){
-		      break;
-	      }
 
-	      symbol = (unsigned char)val;
-	      frequencies[symbol]++;
-	      
+		val = in.get();
+		if(in.eof()){
+			break;
+		}
+
+		symbol = (unsigned char)val;
+		frequencies[symbol]++;
 	}
-
-	
-
 
 	for (int i = 0; i < frequencies.size(); i++){
 		outFile << frequencies[i] << endl;
 
 	}
+	cout << frequencies[97] << endl;
+	cout << frequencies[98] << endl;	
+	cout << frequencies[99] << endl;
+	cout << frequencies[100] << endl;
 
 	//build the tree
 	tree.build(frequencies);
 
-		
+
 	//encode on tree
 	for (int i = 0; i < frequencies.size(); i++){
-	  if (frequencies[i] != 0){
-	    tree.encode((byte) i, outFile);
-	  }
+		if (frequencies[i] != 0){
+			tree.encode((byte) i, outFile);
+		}
 	}
 
 	in.close();
@@ -75,17 +72,17 @@ int main(int argc, char* argv[]) {
 
 	string inFile = argv[1];
 	string outFile = argv[2];
-	
+
 	if (!FileUtils::isValidFile(inFile)){
-	  return -1;
+		return -1;
 	}
 	if (FileUtils::isEmptyFile(inFile)){
-	  return -1;
+		return -1;
 	}
 	pseudoCompression(inFile, outFile);
 
 	//trueCompression(inFile, outFile);
-	
+
 	return 0; 
 
 }

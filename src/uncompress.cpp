@@ -23,14 +23,15 @@ void pseudoDecompression(string inFileName, string outFileName) {
 
 
 	ifstream in;
-	in.open(inFileName);
+	in.open(inFileName, ios::binary);
 
 	while(1){
 
 		val = in.get();
 
-		if(in.eof()){
+		if(count == 256){
 			break;
+
 		}
 
 		if(count < size_vec){
@@ -45,12 +46,15 @@ void pseudoDecompression(string inFileName, string outFileName) {
 
 	//open decompressed file and write decoded chars to it 
 	ofstream outFile;
-	outFile.open(outFileName);
+	outFile.open(outFileName, ios::binary);
 
-	for(int i = 257; i != in.eof(); i++){
+	while(1){
 
-		outFile << tree.decode(in);
-
+		if(in.eof()){
+			break;
+		}
+		
+		outFile.put(tree.decode(in));
 	}
 
 
