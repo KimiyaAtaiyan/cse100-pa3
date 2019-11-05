@@ -37,16 +37,7 @@ void pseudoCompression(string inFileName, string outFileName) {
 	      if(in.eof()){
 		      break;
 	      }
-		/*
-	      if( frequencies[(int)symbol] == 0){
 
-	    	  frequencies[(int)symbol] = 1;
-	      }
-	      else{
-
-		   frequencies[(int)symbol] = frequencies[(int)symbol]+1;
-		}
-		*/
 	      symbol = (unsigned char)val;
 	      frequencies[symbol]++;
 	      
