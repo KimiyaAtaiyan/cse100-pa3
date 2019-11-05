@@ -14,23 +14,30 @@
 /* TODO: add pseudo compression with ascii encoding and naive header
  * (checkpoint) */
 void pseudoCompression(string inFileName, string outFileName) {
-/*	vector<unsigned int> frequencies(size_vec);
-	unsigned char symbol;
-	HCTree* tree;
-	ostream out;
 
+
+	vector<unsigned int> frequencies(size_vec,0);
+	unsigned char symbol;
+	int val;
+	HCTree tree;
+
+	ofstream outFile;
 	ifstream in;
+
+	//open files
 	in.open(inFileName);
+	outFile.open(outFileName , ios::binary);
 
 	while(1){
 	
 	      //read symbols from file on at a time
-	      symbol = (unsigned char)in.get();
-
+	      //symbol = (unsigned char)in.get();
+	      val = in.get();
+		
 	      if(in.eof()){
-	        break;
+		      break;
 	      }
-
+		/*
 	      if( frequencies[(int)symbol] == 0){
 
 	    	  frequencies[(int)symbol] = 1;
@@ -39,27 +46,33 @@ void pseudoCompression(string inFileName, string outFileName) {
 
 		   frequencies[(int)symbol] = frequencies[(int)symbol]+1;
 		}
+		*/
+	      symbol = (unsigned char)val;
+	      frequencies[symbol]++;
+	      
 	}
 
-	//open compressed file
-	out.open(outFileName);
 	
+
+
 	for (int i = 0; i < frequencies.size(); i++){
-	  out.put(frequencies[i]);
-	  out.put('\n');
+		outFile << frequencies[i] << endl;
+
 	}
 
 	//build the tree
-	tree->build(frequencies);
-	
+	tree.build(frequencies);
+
+		
 	//encode on tree
 	for (int i = 0; i < frequencies.size(); i++){
 	  if (frequencies[i] != 0){
-	    tree->encode((byte) i, out);
+	    tree.encode((byte) i, outFile);
 	  }
 	}
 
-	in.close(inFileName);*/
+	in.close();
+	outFile.close();
 
 }
 
@@ -68,22 +81,19 @@ void trueCompression(string inFileName, string outFileName) {}
 
 /* TODO: Main program that runs the compress */
 int main(int argc, char* argv[]) { 
-/*	if (argc != 2){
-		return -1;
-	}
-	
-	string inFile = argv[0];
-	string outFile = argv[1];
-	
-	if (!isValidFile(inFile)){
-	  return -1;
-	}
-	if (isEmptyFile(inFile)){
-	  return -1;
-	}
 
+	string inFile = argv[1];
+	string outFile = argv[2];
+	
+	if (!FileUtils::isValidFile(inFile)){
+	  return -1;
+	}
+	if (FileUtils::isEmptyFile(inFile)){
+	  return -1;
+	}
 	pseudoCompression(inFile, outFile);
-	//trueCompression(inFile, outFile);*/
+
+	//trueCompression(inFile, outFile);
 	
 	return 0; 
 
