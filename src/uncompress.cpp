@@ -18,7 +18,7 @@ void pseudoDecompression(string inFileName, string outFileName) {
 	//build frequency vector from file 
 	vector<unsigned int> frequencies(size_vec, 0);
 	int count = 0;
-	int val;
+	string val;
 	HCTree tree;
 
 
@@ -27,16 +27,15 @@ void pseudoDecompression(string inFileName, string outFileName) {
 
 	while(1){
 
-
-		val = in.get();
-
 		if(count == 256){
 			break;
 
 		}
+		
+		getline(in, val);
 
 		if(count < size_vec){
-			frequencies[count] = (unsigned int)val;
+			frequencies[count] = stoi(val);
 		}
 		count++;
 	}
@@ -51,11 +50,13 @@ void pseudoDecompression(string inFileName, string outFileName) {
 
 	while(1){
 
-		if(in.eof()){
+		outFile << tree.decode(in);
+	
+		if(in.peek() == -1){
 			break;
 		}
 		
-		outFile << tree.decode(in);
+		
 	}
 
 

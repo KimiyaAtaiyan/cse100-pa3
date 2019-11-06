@@ -8,7 +8,7 @@
 #include "HCTree.hpp"
 #include <ostream>
 #include <string>
-//#include <vector>
+#include <vector>
 #include <bits/stdc++.h>
 
 
@@ -128,19 +128,29 @@ byte HCTree::decode(istream& in) const {
 	byte retSymbol = '\0';
 	char character = (char)in.get();
 
+	/*if ((int) character == -1){
+	  return '';
+	}*/
 	//read in the string from in 
-	while(curr != nullptr && (int) character != -1){
-		
+	while(curr != nullptr){
+
 		if((int)character != -1){
+			retSymbol = curr->symbol;
 			if(character == '0'){
+//				retSymbol = curr->symbol;
 				curr = curr->c0;
-				retSymbol = curr->symbol;
 			}
 			else{
+//				retSymbol = curr->symbol;
 				curr = curr->c1;
-				retSymbol = curr->symbol;
 			}
-			character = (char)in.get();
+
+		 
+			if(find(leaves.begin(), leaves.end(), curr) == leaves.end()){
+
+			//if (curr != nullptr){
+  			  character = (char)in.get();
+			}
 		}
 		else{
 			break;

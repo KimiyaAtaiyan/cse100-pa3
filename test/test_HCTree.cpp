@@ -105,5 +105,5 @@ TEST_F(SimpleHCTreeFixture, TEST_SINGLE_NODE_DECODE){
 	tree4.encode('a', os);
 	ASSERT_EQ(os.str(), "0");
 	istringstream is("0");
-	//ASSERT_EQ(tree4.decode(is), 'a');
+	ASSERT_EQ(tree4.decode(is), 'a');
 }

@@ -47,13 +47,16 @@ void pseudoCompression(string inFileName, string outFileName) {
 
 	//build the tree
 	tree.build(frequencies);
-
-
+	in.clear();
+	in.seekg(0, ios::beg);
 	//encode on tree
-	for (int i = 0; i < frequencies.size(); i++){
-		if (frequencies[i] != 0){
-			tree.encode((byte) i, outFile);
+
+	while(1){
+		val = in.get();
+		if (in.eof()){
+		  break;
 		}
+		tree.encode((unsigned char) val, outFile);
 	}
 
 	in.close();
