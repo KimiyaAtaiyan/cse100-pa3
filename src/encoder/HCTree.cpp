@@ -1,9 +1,10 @@
 /**
  * File Name: HCTree.cpp
- * Author:
- * PIDs: 
- * Description: 
- * Sources of Help: 
+ * Author: Kimiya Ataiyan, Meghana Sridhar
+ * PIDs: A15753878, A1329951
+ * Description: Contains the method functionality to build, encode and decode
+ *    		a tree
+ * Sources of Help: Tutors
  */
 #include "HCTree.hpp"
 #include <ostream>
@@ -12,154 +13,187 @@
 #include <bits/stdc++.h>
 
 
+/**
+ * Function Name: ~HCTree() (destructor)
+ * Function Prototype: ~HCTree()
+ * Description: Calls the deleteAll to delete the tree
+ * Parameters: None
+ * Returns: None
+ */
 HCTree::~HCTree() {
   
   deleteAll(root);
 
 }
 
-void HCTree::build(const vector<unsigned int>& freqs) {	
+/**
+ * Function Name: build()
+ * Function Prototype: void build(const vector<unsigned int>& freqs)
+ * Description: Builds the tree node by node
+ * Parameters: const vector<unsigned int>& freqs - the frequency array 
+ *         containing ASCII indices with their respective frequencies
+ * Returns: None
+ */
+void HCTree::build(const vector<unsigned int>& freqs) { 
 
-	pq myQueue;
+  //Priority queue
+  pq myQueue;
 
-	//use priority_queue to sort frequency in ascending order
-	for(int i =0 ;i < freqs.size(); i++){
+  //Use myQueue to sort frequency in ascending order
+  for(int i =0 ;i < freqs.size(); i++){
 
-		if(freqs[i] != 0){
-			
-			HCNode* newNode = new HCNode(freqs[i], (byte)i, nullptr,nullptr,nullptr);
-			myQueue.push(newNode);
-			leaves[i] = newNode;
-		}
-
-
-	}
-
-	//call helper function to build tree
-	buildHelper(myQueue);	
+    if(freqs[i] != 0){
+      //Initializes new node, pushes node onto Queue and populates leaves 
+      HCNode* newNode = new HCNode(freqs[i], (byte)i, nullptr,nullptr,nullptr);
+      myQueue.push(newNode);
+      leaves[i] = newNode;
+    }
+  }
+  //call helper function to build tree
+  buildHelper(myQueue); 
 }
 
+/**
+ * Function Name: buildHelper()
+ * Function Prototype: void buildHelper(pq& myQueue)
+ * Description: Recursively connects the nodes to build the tree
+ * Parameters: pq& myQueue - contains the nodes of the tree
+ * Returns: None
+ */
 void HCTree::buildHelper(pq& myQueue){
 
-	//Base case
-	if(myQueue.size() <= 1){
-		root = myQueue.top();
-		myQueue.pop();
-		return;
-	}
+  //Base case
+  if(myQueue.size() <= 1){
+    //Initializes root
+    root = myQueue.top();
+    myQueue.pop();
+    return;
+  }
 
+  //Initializes left child
+  HCNode* child0 = myQueue.top();
+  myQueue.pop();
+  //Initializes right child
+  HCNode * child1 = myQueue.top();
+  myQueue.pop();
 
-	HCNode* child0 = myQueue.top();
-	myQueue.pop();
-	HCNode * child1 = myQueue.top();
-	myQueue.pop();
+  //Creates parentNode
+  HCNode* parentNode = new HCNode( child0->count + child1->count, child1->symbol, child0, child1, nullptr);
+  //Connects children to parent
+  child0->p = parentNode;
+  child1->p = parentNode;
 
-	HCNode* parentNode = new HCNode( child0->count + child1->count, child1->symbol, child0, child1, nullptr);
-	child0->p = parentNode;
-	child1->p = parentNode;
-
-	//push parent node back to queue
-	myQueue.push(parentNode);
-
-
-	//recursive call
-	buildHelper(myQueue);
-
-	return;
-
+  //Push parentNode onto Queue
+  myQueue.push(parentNode);
+  //Recursive call to helper
+  buildHelper(myQueue);
+  return;
 }
+    
+/* TODO */
+void HCTree::encode(byte symbol, BitOutputStream& out) const{}
 
+/**
+ * Function Name: encode
+ * Function Prototype: void encode(byte symbol, ostream& out) const
+ * Description: Encodes a byte by traversing the tree and assigning a unique
+ *    bit code
+ * Parameters: byte symbol - the character to be encoded
+ *         ostream& out - file to write the encoded symbol to
+ * Returns: None
+ */
 void HCTree::encode(byte symbol, ostream& out) const {
 
-	//use leaves vector to recurse up the tree, reverse found string
-	HCNode* curr = leaves[(int)symbol];
-	string binString="";
+  //Use leaves vector to recurse up the tree
+  HCNode* curr = leaves[(int)symbol];
+  string binString="";
 
-	if(curr == nullptr){
-		return;
-	}
+  //Return if no leaves
+  if(curr == nullptr){
+    return;
+  }
 
-	if(curr == root){
-		out.put('0');
-		return;
-	}
+  //Return 0 if only root in tree
+  if(curr == root){
+    out.put('0');
+    return;
+  }
 
-	while(curr != root){
-		
-		//check if current is left child
-		if( curr == curr->p->c0){
-			//append 0 going left
-			binString.append("0");
-			curr = curr->p;
-		}
-		else if(curr = curr->p->c1){
-			//append 1 going right
-			binString.append("1");
-			curr = curr->p;
-		}
-	}
+  //Loops till curr is root
+  while(curr != root){
+    
+    //Check if current is left child
+    if( curr == curr->p->c0){
+      //Append 0 going left
+      binString.append("0");
+      curr = curr->p;
+    }
+    else if(curr = curr->p->c1){
+      //Append 1 going right
+      binString.append("1");
+      curr = curr->p;
+    }
+  }
 
-	//reverse string 
-	reverse(binString.begin(), binString.end());
+  //Reverse string 
+  reverse(binString.begin(), binString.end());
 
-	for(int i = 0; i < binString.length(); i++){
-
-		out.put(binString[i]);
-	}
-
-	return;
-}
-
-
-
-/* TODO */
-byte HCTree::decode(BitInputStream& in) const { 
-	return ' ';	
+  //Loops through binString
+  for(int i = 0; i < binString.length(); i++){
+    //Outputs the bits of the binary string
+    out.put(binString[i]);
+  }
+  return;
 }
 
 /* TODO */
+byte HCTree::decode(BitInputStream& in) const { return ' '; }
+
+/**
+ * Function Name: decode()
+ * Function Prototype: byte decode(istream& in) const
+ * Description: Decodes one byte at a time given an input file
+ * Parameters: istream& in - input file
+ * Returns: byte that has been decoded
+ */
 byte HCTree::decode(istream& in) const { 
-	
-	if(root == nullptr){
-		return NULL;
-	}
+  //Checks if root is null
+  if(root == nullptr){
+    return '\0';
+  }
 
-	HCNode* curr = root;
-	byte retSymbol = '\0';
-	char character = (char)in.get();
+  //Initializes the local variables
+  HCNode* curr = root;
+  byte retSymbol = '\0';
+  char character = (char)in.get();
 
-	/*if ((int) character == -1){
-	  return '';
-	}*/
-	//read in the string from in 
-	while(curr != nullptr){
+  //Loops till curr is null
+  while(curr != nullptr){
 
-		if((int)character != -1){
-			retSymbol = curr->symbol;
-			if(character == '0'){
-//				retSymbol = curr->symbol;
-				curr = curr->c0;
-			}
-			else{
-//				retSymbol = curr->symbol;
-				curr = curr->c1;
-			}
+    //Checks if eof
+    if((int)character != -1){
+      //Sets return Symbol to current symbol
+      retSymbol = curr->symbol;
+      //Checks if character is 0
+      if(character == '0'){
+        curr = curr->c0;
+      }
+      else{
+        curr = curr->c1;
+      }
 
-		 
-			if(find(leaves.begin(), leaves.end(), curr) == leaves.end()){
-
-			//if (curr != nullptr){
-  			  character = (char)in.get();
-			}
-		}
-		else{
-			break;
-		}
-	}	
-	return retSymbol;
-
+      //Checks if curr is a leaf node
+      if(find(leaves.begin(), leaves.end(), curr) == leaves.end()){
+        //Gets the next character from input file
+          character = (char)in.get();
+      }
+    }
+    else{
+      break;
+    }
+  } 
+  return retSymbol;
 }
-
 
 /*
  * Function name: deleteAll()

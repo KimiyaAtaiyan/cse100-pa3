@@ -1,8 +1,10 @@
 /**
- * TODO: file header
- *
- * Author:
+ * File Name: HCTree.hpp
+ * Author: Kimiya Ataiyan, Meghana Sridhar
+ * PID: A15753878, A1329951
+ * Description: Contains definitions of HCTree class and its methods
  */
+
 #ifndef HCTREE_HPP
 #define HCTREE_HPP
 
@@ -17,7 +19,10 @@ using namespace std;
 
 const int size_vec = 256;
 
-/** TODO: class header */
+/** 
+ * Class Name: HCTree
+ * Description: Defines methods and private variables for an HCTree
+ **/
 class HCTree {
   private:
     HCNode* root;            // the root of HCTree
@@ -26,35 +31,36 @@ class HCTree {
     typedef priority_queue< HCNode*, vector<HCNode*>, HCNodePtrComp> pq;
 
 
-    /*Helper Function*/
+    /*Helper Function for build*/
     void buildHelper(pq& myQueue);
 
   public:
-    /* TODO: add function header and implement */
+
+    /* Constructor that defines root node and leaves vector*/
     HCTree() {
-    	root = nullptr;
-   	leaves = vector<HCNode*>(size_vec); 
+      root = nullptr;
+    leaves = vector<HCNode*>(size_vec); 
     }
 
-    /* TODO: add function header */
+    /* Desctructor that calls the deleteAll method*/
     ~HCTree();
 
-    /* TODO: add function header */
+    /* Builds the HCTree by linking HCNodes*/
     void build(const vector<unsigned int>& freqs);
 
-    /* TODO: add function header */
+    /* Encodes a byte by traversing through the HCTree using BitOutputStream*/
     void encode(byte symbol, BitOutputStream& out) const;
 
-    /* TODO: add function header */
+    /* Encodes a byte by traversing through the HCTree using ostream*/
     void encode(byte symbol, ostream& out) const;
 
-    /* TODO: add function header */
+    /* Decodes a byte by traversing through the HCTree using BitInputStream */
     byte decode(BitInputStream& in) const;
 
-    /* TODO: add function header */
+    /* Decodes a byte by traversing through the HCTree using istream*/
     byte decode(istream& in) const;
 
-    /*TODO: add function header */
+    /* Deletes all the nodes in the tree*/
     void deleteAll(HCNode* curr);
 };
 

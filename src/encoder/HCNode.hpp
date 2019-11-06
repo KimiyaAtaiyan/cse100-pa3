@@ -1,8 +1,10 @@
 /**
+ * File Name: HCNode.hpp
  * Author: Kimiya Ataiyan, Meghana Sridhar
  * PID: A15753878, A1329951
  * Date: 11/1/19
- * Filename: src/encoder/HDNode.hpp
+ * Description: Contains definitions and declarations of the Node class
+ * 		and its dependencies
  */
 #ifndef HCNODE_HPP
 #define HCNODE_HPP
@@ -13,7 +15,9 @@ typedef unsigned char byte;
 
 using namespace std;
 
-/** A class, instances of which are nodes in an HCTree.
+/** 
+ * Class Name: HCNode
+ * Description: A class that contain instances of which are nodes in an HCTree
  */
 class HCNode {
   public:
