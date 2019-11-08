@@ -11,6 +11,7 @@
 typedef unsigned char byte;
 
 using namespace std;
+int byte_size = 8;
 
 /** TODO: class header */
 class BitOutputStream {
@@ -21,7 +22,11 @@ class BitOutputStream {
 
   public:
     /* TODO: add function header and implement */
-    explicit BitOutputStream(ostream& os) : out(os){};
+    explicit BitOutputStream(ostream& os) : out(os){
+    
+    	nbits = 0;
+	buf = 0;
+    };
 
     /* TODO: add function header */
     void flush();

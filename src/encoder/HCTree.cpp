@@ -91,7 +91,51 @@ void HCTree::buildHelper(pq& myQueue){
 }
     
 /* TODO */
-void HCTree::encode(byte symbol, BitOutputStream& out) const{}
+void HCTree::encode(byte symbol, BitOutputStream& out) const{
+
+
+  HCNode* curr = leaves[(int)symbol];
+  string binString = "";
+
+  if(curr == nullptr){
+    return;
+  }
+
+  //Return 0 if only root in tree
+  if(curr == root){
+    out.writeBit(0);
+    return;
+  }
+
+  //Loops till curr is root
+  while(curr != root){
+    
+    //Check if current is left child
+    if( curr == curr->p->c0){
+      //Append 0 going left
+      binString.append("0");
+      curr = curr->p;
+    }
+    else if(curr = curr->p->c1){
+      //Append 1 going right
+      binString.append("1");
+      curr = curr->p;
+    }
+  }
+
+  //Reverse string 
+  reverse(binString.begin(), binString.end());
+
+  //Loops through binString
+  for(int i = 0; i < binString.length(); i++){
+
+    //Outputs the bits of the binary string
+    out.writeBit(int(binString[i]));
+    
+  }
+  return;
+
+}
 
 /**
  * Function Name: encode
@@ -147,7 +191,50 @@ void HCTree::encode(byte symbol, ostream& out) const {
 }
 
 /* TODO */
-byte HCTree::decode(BitInputStream& in) const { return ' '; }
+byte HCTree::decode(BitInputStream& in) const { 
+
+  //Checks if root is null
+  if(root == nullptr){
+    return '\0';
+  }
+
+  //Initializes the local variables
+  HCNode* curr = root;
+  byte retSymbol = '\0';
+  char character = (char)(in.readBit());
+
+  //Loops till curr is null
+  while(curr != nullptr){
+
+    //Checks if eof
+    if((int)character != -1){
+      //Sets return Symbol to current symbol
+      retSymbol = curr->symbol;
+      //Checks if character is 0
+      if(character == '0'){
+        curr = curr->c0;
+      }
+      else{
+        curr = curr->c1;
+      }
+
+      //Checks if curr is a leaf node
+      if(find(leaves.begin(), leaves.end(), curr) == leaves.end()){
+
+        //Gets the next character from input file
+          character = (char)(in.readBit());
+
+      }
+    }
+    else{
+      break;
+    }
+
+  } 
+  return retSymbol;
+
+
+}
 
 /**
  * Function Name: decode()
