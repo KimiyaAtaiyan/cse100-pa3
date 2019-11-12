@@ -7,6 +7,10 @@ project('pa3_Huffman_Encoding', 'cpp',
 
 
 # === src dependencies ===
+
+cxxopts_proj = subproject('cxxopts')
+cxxopts_dep = cxxopts_proj.get_variable('cxxopts_dep')
+
 # === end src dependencies ===
 subdir('src')
 

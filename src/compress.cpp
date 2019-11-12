@@ -12,6 +12,8 @@
 #include "FileUtils.hpp"
 #include "HCNode.hpp"
 #include "HCTree.hpp"
+#include <string.h>
+#include "cxxopts.hpp"
 
 /* 
  * Function Name: pseudoCompression()
@@ -23,6 +25,17 @@
  * Returns: void 
  */
 void pseudoCompression(string inFileName, string outFileName) {
+
+  //Checks if inputs file is empty
+  if (FileUtils::isEmptyFile(inFileName)){
+    
+	  ofstream outFile;
+	  outFile.open(outFileName);
+	  outFile.close();
+	  return;
+  }
+
+
   //Defines local variables
   vector<unsigned int> frequencies(size_vec,0);
   unsigned char symbol;
@@ -92,6 +105,16 @@ void pseudoCompression(string inFileName, string outFileName) {
  */
 void trueCompression(string inFileName, string outFileName) {
 
+ //Checks if inputs file is empty
+  if (FileUtils::isEmptyFile(inFileName)){
+    
+	  ofstream outFile;
+	  outFile.open(outFileName);
+	  outFile.close();
+	  return;
+  }
+
+
   //Defines local variables
   vector<unsigned int> frequencies(size_vec,0);
   unsigned char symbol;
@@ -99,26 +122,24 @@ void trueCompression(string inFileName, string outFileName) {
   HCTree tree;
 
   //Defines streams
-  ostream out;
-  istream in;
+  ofstream outFile;
+  ifstream inFile;
 
 
   //Open files
-	out.open();
-	in.open();
+   outFile.open(outFileName);
+   inFile.open(inFileName);
 
 
   BitOutputStream bos(outFile);
-  BitInputStream bis(inFile);
-
 
   //Loop till eof
   while(1){
 
     //Get char by char
-    val = in.get();
+    val = inFile.get();
 
-    if(in.eof()){
+    if(inFile.eof()){
       break;
     }
 
@@ -131,29 +152,29 @@ void trueCompression(string inFileName, string outFileName) {
   //Loops through frequencies
   for (int i = 0; i < frequencies.size(); i++){
     //Writes header
-     out << frequencies[i] << endl;
+     outFile << frequencies[i] << endl;
   }
 
   //Builds the tree
   tree.build(frequencies);
   
   //Resets position to read input file
-  in.clear();
-  in.seekg(0, ios::beg);
+  inFile.clear();
+  inFile.seekg(0, ios::beg);
 
   //Encode on tree
 
   while(1){
-    val = in.get();
-    if (in.eof()){
+    val = inFile.get();
+    if (inFile.eof()){
       break;
     }
     tree.encode((unsigned char) val, bos);
   }
 
   //Close files
-  in.close();
-  out.close();
+  inFile.close();
+  outFile.close();
 
 }
 
@@ -166,22 +187,63 @@ void trueCompression(string inFileName, string outFileName) {
  * Returns: int that indicates the success of program run
  */
 int main(int argc, char* argv[]) { 
-  //Store the input and output file (names)
-  string inFile = argv[1];
-  string outFile = argv[2];
+
+  cxxopts::Options options("./compress","Compresses files using Huffman Encoding");
+  options.positional_help("./path_to_input_file ./path_to_output_file");
+
+  bool isAsciiOutput = false;
+  string inFile;
+  string outFile;
+
+  options.allow_unrecognised_options().add_options()(
+		  "ascii", "Write output in ascii mode instead of bit stream",
+		  cxxopts::value<bool>(isAsciiOutput))(
+		  "input", "", cxxopts::value<string>(inFile))(
+		  "output", "", cxxopts::value<string>(outFile))(
+		  "h,help", "Print help and exit");
+
+  options.parse_positional({"input", "output"});
+  auto userOptions = options.parse(argc, argv);
+
+  if(userOptions.count("help") || !FileUtils::isValidFile(inFile) || outFile.empty()){
+	  cout << options.help({""}) << std::endl;
+	  exit(0);
+  }
+  
+  if(isAsciiOutput){
+	  pseudoCompression(inFile, outFile);
+  }
+  else{
+	  trueCompression(inFile, outFile);
+  }
+
+  /*bool pseudo = false;
+  if(argc == 3){
+	  if(strcmp(argv[1],"--ascii")== 0){
+
+		inFile = argv[2];
+		outFile = argv[3];
+		pseudo = true;
+	  }
+  }
+  else{
+ 	 inFile = argv[1];
+  }	 outFile = argv[2];
 
   //Checks if input file is valid
-  if (!FileUtils::isValidFile(inFile)){
-    return -1;
+ //if (!FileUtils::isValidFile(inFile)){
+  //	return -1;
+ // }
+  
+  if(pseudo){
+ 	
+	  //Calls pseudoCompression
+ 	   pseudoCompression(inFile, outFile);
   }
-  //Checks if inputs file is empty
-  if (FileUtils::isEmptyFile(inFile)){
-    return -1;
-  }
-  //Calls pseudoCompression
-  pseudoCompression(inFile, outFile);
-
-  //trueCompression(inFile, outFile);
+  else{
+ 	  //Calls trueCompression	
+	  trueCompression(inFile, outFile);
+  }*/
 
   return 0; 
 }

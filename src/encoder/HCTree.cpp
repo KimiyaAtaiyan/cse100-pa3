@@ -130,6 +130,14 @@ void HCTree::encode(byte symbol, BitOutputStream& out) const{
 
   //Reverse string 
   reverse(binString.begin(), binString.end());
+//??????????????????
+  /*if(binString.length() < byte_size){
+
+	  for(int i = binString.length()-1; i < byte_size; i++){
+		  binString.append("0");
+	  }
+  }*/
+//????????????????
 
   //Loops through binString
   for(int i = 0; i < binString.length(); i++){
