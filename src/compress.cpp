@@ -82,7 +82,6 @@ void pseudoCompression(string inFileName, string outFileName) {
 }
 
 /* 
- * TODO
  * Function Name: trueCompression()
  * Functon Prototype: void trueCompression(string inFileName, 
  *               string outFilename)
@@ -91,7 +90,72 @@ void pseudoCompression(string inFileName, string outFileName) {
  *         string outFileName - the output file name
  * Returns: void 
  */
-void trueCompression(string inFileName, string outFileName) {}
+void trueCompression(string inFileName, string outFileName) {
+
+  //Defines local variables
+  vector<unsigned int> frequencies(size_vec,0);
+  unsigned char symbol;
+  int val;
+  HCTree tree;
+
+  //Defines streams
+  ostream out;
+  istream in;
+
+
+  //Open files
+	out.open();
+	in.open();
+
+
+  BitOutputStream bos(outFile);
+  BitInputStream bis(inFile);
+
+
+  //Loop till eof
+  while(1){
+
+    //Get char by char
+    val = in.get();
+
+    if(in.eof()){
+      break;
+    }
+
+    //Insert symbol and increment its frequency
+    symbol = (unsigned char)val;
+    frequencies[symbol]++;
+  }
+  
+
+  //Loops through frequencies
+  for (int i = 0; i < frequencies.size(); i++){
+    //Writes header
+     out << frequencies[i] << endl;
+  }
+
+  //Builds the tree
+  tree.build(frequencies);
+  
+  //Resets position to read input file
+  in.clear();
+  in.seekg(0, ios::beg);
+
+  //Encode on tree
+
+  while(1){
+    val = in.get();
+    if (in.eof()){
+      break;
+    }
+    tree.encode((unsigned char) val, bos);
+  }
+
+  //Close files
+  in.close();
+  out.close();
+
+}
 
 /* 
  * Function Name: main()

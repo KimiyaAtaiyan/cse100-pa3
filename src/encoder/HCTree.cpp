@@ -90,7 +90,12 @@ void HCTree::buildHelper(pq& myQueue){
   return;
 }
     
-/* TODO */
+/*
+ * Function name: encode
+ * Function Prototype: void encode(byte symbol, BitOutputStream&out) const
+ * Description: write the encoding bits of given symbol to BitOutputStream
+ * Return: none
+ */
 void HCTree::encode(byte symbol, BitOutputStream& out) const{
 
 
@@ -190,7 +195,13 @@ void HCTree::encode(byte symbol, ostream& out) const {
   return;
 }
 
-/* TODO */
+/*
+ * Function name: decode
+ * Function Prototype: byte decode(BitInputStream& in) const
+ * Description: Decode the sequence from the given BitInputStream to return 
+ * 		the coded symbol
+ * Return: byte representing the coded symbol
+ */
 byte HCTree::decode(BitInputStream& in) const { 
 
   //Checks if root is null

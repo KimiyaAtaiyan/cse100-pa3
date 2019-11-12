@@ -16,6 +16,8 @@ void BitOutputStream::flush() {
 /* TODO */
 void BitOutputStream::writeBit(int i) {
 
+	//EDGE CASE FOR TRAILING 0's ?????
+	
 	if(nbits == byte_size){
 		flush();
 	}

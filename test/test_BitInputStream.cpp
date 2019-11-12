@@ -18,3 +18,16 @@ TEST(BitInputStreamTests, SIMPLE_TEST) {
     ASSERT_EQ(1, bis.readBit());
     ASSERT_EQ(0, bis.readBit());
 }
+
+TEST(BitInputStreamTests, TEST_2){
+
+	string bitsStr = "00000000";
+	string ascii = string(1,stoi(bitsStr, nullptr,2));
+
+	stringstream ss;
+	ss.str(ascii);
+	BitInputStream bis(ss);
+
+	ASSERT_EQ(0, bis.readBit());
+	ASSERT_EQ(0, bis.readBit());
+}
