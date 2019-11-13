@@ -172,6 +172,12 @@ void trueCompression(string inFileName, string outFileName) {
     tree.encode((unsigned char) val, bos);
   }
 
+  int nbitsTotal = nbitsWritten;
+
+  if(nbitsTotal % byte_size != 0){
+  	bos.flush();
+  }
+
   //Close files
   inFile.close();
   outFile.close();
@@ -216,34 +222,6 @@ int main(int argc, char* argv[]) {
   else{
 	  trueCompression(inFile, outFile);
   }
-
-  /*bool pseudo = false;
-  if(argc == 3){
-	  if(strcmp(argv[1],"--ascii")== 0){
-
-		inFile = argv[2];
-		outFile = argv[3];
-		pseudo = true;
-	  }
-  }
-  else{
- 	 inFile = argv[1];
-  }	 outFile = argv[2];
-
-  //Checks if input file is valid
- //if (!FileUtils::isValidFile(inFile)){
-  //	return -1;
- // }
-  
-  if(pseudo){
- 	
-	  //Calls pseudoCompression
- 	   pseudoCompression(inFile, outFile);
-  }
-  else{
- 	  //Calls trueCompression	
-	  trueCompression(inFile, outFile);
-  }*/
 
   return 0; 
 }

@@ -8,7 +8,9 @@
 /* TODO */
 void BitOutputStream::flush() {
 
-	out<< buf;
+	out.put(buf);
+	out.flush();
+	buf = 0;
 	nbits = 0;
 
 }
@@ -16,14 +18,12 @@ void BitOutputStream::flush() {
 /* TODO */
 void BitOutputStream::writeBit(int i) {
 
-	//EDGE CASE FOR TRAILING 0's ?????
-	
-	if(nbits == byte_size){
-		flush();
-	}
-	
 	int loc = byte_size-nbits-1;
+	i = i&1;
 	buf = buf|(i << loc);
 	nbits++;
 
+	if(nbits == byte_size){
+		flush();
+	}
 }

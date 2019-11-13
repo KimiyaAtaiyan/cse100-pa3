@@ -18,6 +18,8 @@
 using namespace std;
 
 const int size_vec = 256;
+int nbitsWritten;
+int numSymbols;
 
 /** 
  * Class Name: HCTree
@@ -39,7 +41,9 @@ class HCTree {
     /* Constructor that defines root node and leaves vector*/
     HCTree() {
       root = nullptr;
-    leaves = vector<HCNode*>(size_vec); 
+      leaves = vector<HCNode*>(size_vec); 
+      numSymbols = 0;
+      nbitsWritten = 0;
     }
 
     /* Desctructor that calls the deleteAll method*/

@@ -140,16 +140,14 @@ void trueDecompression(string inFileName, string outFileName) {
 	//Open output file and write decoded chars to it 
 	ofstream outFile;
 	outFile.open(outFileName, ios::binary);
+	int numSymbsRead = 0;
 
 	//Loops till eof
-	while(1){
+	while(numSymbsRead < numSymbols){
 		//Writes decoded char into output file
 		outFile << tree.decode(bis);
+		numSymbsRead++;
 	
-		//Checks if next character is eof
-		if(in.peek() == -1){
-			break;
-		}
 	}
 
 	//Closes files
@@ -195,23 +193,6 @@ int main(int argc, char* argv[]) {
    else{
 	   trueDecompression(inFile, outFile);
    }
-
-/*	//Stores input and output file (names)
-	string inFile = argv[1];
-	string outFile = argv[2];
-
-	//Checks if input file is valid
-	if(!FileUtils::isValidFile(inFile)){
-		return -1;
-	}
-	//Checks if input file is empty
-	if(FileUtils::isEmptyFile(inFile)){
-		return -1;
-	}
-
-	//Calls pseudoDecompression
-	pseudoDecompression(inFile, outFile);
-	//trueDecompression(inFile, outFile);*/
 
 	return 0;
 }

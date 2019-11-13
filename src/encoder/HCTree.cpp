@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 #include <bits/stdc++.h>
-
+#include <stdlib.h>
 
 /**
  * Function Name: ~HCTree() (destructor)
@@ -45,6 +45,7 @@ void HCTree::build(const vector<unsigned int>& freqs) {
     if(freqs[i] != 0){
       //Initializes new node, pushes node onto Queue and populates leaves 
       HCNode* newNode = new HCNode(freqs[i], (byte)i, nullptr,nullptr,nullptr);
+      numSymbols = numSymbols + freqs[i];
       myQueue.push(newNode);
       leaves[i] = newNode;
     }
@@ -130,20 +131,13 @@ void HCTree::encode(byte symbol, BitOutputStream& out) const{
 
   //Reverse string 
   reverse(binString.begin(), binString.end());
-//??????????????????
-  /*if(binString.length() < byte_size){
-
-	  for(int i = binString.length()-1; i < byte_size; i++){
-		  binString.append("0");
-	  }
-  }*/
-//????????????????
+  nbitsWritten = nbitsWritten + binString.length();
 
   //Loops through binString
   for(int i = 0; i < binString.length(); i++){
 
     //Outputs the bits of the binary string
-    out.writeBit(int(binString[i]));
+    out.writeBit((int) binString[i]);
     
   }
   return;
@@ -220,17 +214,17 @@ byte HCTree::decode(BitInputStream& in) const {
   //Initializes the local variables
   HCNode* curr = root;
   byte retSymbol = '\0';
-  char character = (char)(in.readBit());
+  unsigned int character = in.readBit();
 
   //Loops till curr is null
   while(curr != nullptr){
 
     //Checks if eof
-    if((int)character != -1){
+    if(character != -1){
       //Sets return Symbol to current symbol
       retSymbol = curr->symbol;
       //Checks if character is 0
-      if(character == '0'){
+      if(character == 0){
         curr = curr->c0;
       }
       else{
@@ -241,7 +235,7 @@ byte HCTree::decode(BitInputStream& in) const {
       if(find(leaves.begin(), leaves.end(), curr) == leaves.end()){
 
         //Gets the next character from input file
-          character = (char)(in.readBit());
+          character = in.readBit();
 
       }
     }
