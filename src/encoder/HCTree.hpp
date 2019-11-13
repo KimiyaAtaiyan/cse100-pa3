@@ -21,7 +21,7 @@ const int size_vec = 256;
 int nbitsWritten;
 int numSymbols;
 
-/** 
+/**
  * Class Name: HCTree
  * Description: Defines methods and private variables for an HCTree
  **/
@@ -30,20 +30,18 @@ class HCTree {
     HCNode* root;            // the root of HCTree
     vector<HCNode*> leaves;  // a vector storing pointers to all leaf HCNodes
 
-    typedef priority_queue< HCNode*, vector<HCNode*>, HCNodePtrComp> pq;
-
+    typedef priority_queue<HCNode*, vector<HCNode*>, HCNodePtrComp> pq;
 
     /*Helper Function for build*/
     void buildHelper(pq& myQueue);
 
   public:
-
     /* Constructor that defines root node and leaves vector*/
     HCTree() {
-      root = nullptr;
-      leaves = vector<HCNode*>(size_vec); 
-      numSymbols = 0;
-      nbitsWritten = 0;
+        root = nullptr;
+        leaves = vector<HCNode*>(size_vec);
+        numSymbols = 0;
+        nbitsWritten = 0;
     }
 
     /* Desctructor that calls the deleteAll method*/

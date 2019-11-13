@@ -9,35 +9,29 @@
 
 /* TODO */
 void BitInputStream::fill() {
+    // read byte by byte from input stream
 
-	//read byte by byte from input stream
-	
-	int val = in.get();
-	
-	if(in.eof()){
-		
-		return;
-	}
+    int val = in.get();
 
-	buf =(char)val;
-	
-	nbits = byte_size2;
+    if (in.eof()) {
+        return;
+    }
 
+    buf = (char)val;
+
+    nbits = byte_size2;
 }
 
 /* TODO */
-unsigned int BitInputStream::readBit() { 
+unsigned int BitInputStream::readBit() {
+    unsigned int bitRead;
+    // fill the buffer with 1 byte from file
+    if (nbits == 0) {
+        fill();
+    }
 
-	unsigned int bitRead;
-	//fill the buffer with 1 byte from file
-	if(nbits == 0){	
-		fill();
-	}
+    bitRead = (unsigned int)((buf >> (nbits - 1)) & 1);
+    nbits--;
 
-	bitRead = (unsigned int)((buf>>(nbits-1))&1);
-	nbits--;
-
-
-	return bitRead;
+    return bitRead;
 }
-

@@ -15,7 +15,7 @@ typedef unsigned char byte;
 
 using namespace std;
 
-/** 
+/**
  * Class Name: HCNode
  * Description: A class that contain instances of which are nodes in an HCTree
  */
@@ -23,7 +23,7 @@ class HCNode {
   public:
     unsigned int count;  // the freqency of the symbol
     byte symbol;         // byte in the file we're keeping track of
-    HCNode* c0;          // pointer to '0' child -- left 
+    HCNode* c0;          // pointer to '0' child -- left
     HCNode* c1;          // pointer to '1' child -- right
     HCNode* p;           // pointer to parent
 
@@ -45,14 +45,11 @@ ostream& operator<<(ostream& stm, const HCNode& n) {
  * has higher prioruty.
  */
 struct HCNodePtrComp {
-
-    bool operator()(HCNode*& lhs, HCNode*& rhs) const { 
-    
-    	if(lhs->count != rhs->count){
-		return lhs->count > rhs->count;
-	}
-	return lhs->symbol > rhs->symbol;
-    
+    bool operator()(HCNode*& lhs, HCNode*& rhs) const {
+        if (lhs->count != rhs->count) {
+            return lhs->count > rhs->count;
+        }
+        return lhs->symbol > rhs->symbol;
     }
 };
 #endif  // HCNODE_HPP

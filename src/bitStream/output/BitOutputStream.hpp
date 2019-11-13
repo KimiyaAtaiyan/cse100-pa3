@@ -22,10 +22,9 @@ class BitOutputStream {
 
   public:
     /* TODO: add function header and implement */
-    explicit BitOutputStream(ostream& os) : out(os){
-    
-    	nbits = 0;
-	buf = 0;
+    explicit BitOutputStream(ostream& os) : out(os) {
+        nbits = 0;
+        buf = 0;
     };
 
     /* TODO: add function header */
