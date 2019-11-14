@@ -137,13 +137,19 @@ void trueCompression(string inFileName, string outFileName) {
     }
 
     // Loops through frequencies
-    for (int i = 0; i < frequencies.size(); i++) {
-        // Writes header
-        outFile << frequencies[i] << endl;
-    }
+    /*    for (int i = 0; i < frequencies.size(); i++) {
+            // Writes header
+            outFile << frequencies[i] << endl;
+        }*/
 
     // Builds the tree
     tree.build(frequencies);
+
+    // Writes leaf nodes
+    tree.writeLeafNodes(bos);
+
+    // Writes tree structure to file
+    tree.encodedTree(bos);
 
     // Resets position to read input file
     inFile.clear();

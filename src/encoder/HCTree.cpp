@@ -86,6 +86,16 @@ void HCTree::buildHelper(pq& myQueue) {
     return;
 }
 
+void HCTree::writeLeafNodes(BitOutputStream& out) {
+    for (int i = 0; i < leaves.size(); i++) {
+        encode(leaves[i]->symbol, out);
+    }
+    leafBitsWritten = nbitsWritten;
+    nbitsWritten = 0;
+}
+
+void HCTree::encodedTree(BitOutputStream& out) {}
+
 /*
  * Function name: encode
  * Function Prototype: void encode(byte symbol, BitOutputStream&out) const
