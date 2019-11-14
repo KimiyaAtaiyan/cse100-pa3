@@ -7,7 +7,11 @@
  */
 #include "BitInputStream.hpp"
 
-/* TODO */
+/* Function Name: fill
+ * Function Prototype: void fill()
+ * Description: fills the buffer with a byte from reading from the input File
+ * Return: none
+ */
 void BitInputStream::fill() {
     // read byte by byte from input stream
 
@@ -22,9 +26,15 @@ void BitInputStream::fill() {
     nbits = byte_size2;
 }
 
-/* TODO */
+/* Function name: readBit
+ * Function prototype: unsigned int readBit()
+ * Description: reads from the buffer bit by bit, and fills it once each bit
+ * 		from buffer has been read.
+ * Return: 0 or 1, depending on the bit read at that index
+ */
 unsigned int BitInputStream::readBit() {
     unsigned int bitRead;
+
     // fill the buffer with 1 byte from file
     if (nbits == 0) {
         fill();

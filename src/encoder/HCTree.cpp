@@ -86,16 +86,6 @@ void HCTree::buildHelper(pq& myQueue) {
     return;
 }
 
-void HCTree::writeLeafNodes(BitOutputStream& out) {
-    for (int i = 0; i < leaves.size(); i++) {
-        encode(leaves[i]->symbol, out);
-    }
-    leafBitsWritten = nbitsWritten;
-    nbitsWritten = 0;
-}
-
-void HCTree::encodedTree(BitOutputStream& out) {}
-
 /*
  * Function name: encode
  * Function Prototype: void encode(byte symbol, BitOutputStream&out) const
@@ -105,6 +95,7 @@ void HCTree::encodedTree(BitOutputStream& out) {}
 void HCTree::encode(byte symbol, BitOutputStream& out) const {
     HCNode* curr = leaves[(int)symbol];
     string binString = "";
+    int count = 0;
 
     if (curr == nullptr) {
         return;
@@ -122,10 +113,12 @@ void HCTree::encode(byte symbol, BitOutputStream& out) const {
         if (curr == curr->p->c0) {
             // Append 0 going left
             binString.append("0");
+            count++;
             curr = curr->p;
         } else if ((curr == curr->p->c1)) {
             // Append 1 going right
             binString.append("1");
+            count++;
             curr = curr->p;
         }
     }

@@ -131,8 +131,8 @@ void trueDecompression(string inFileName, string outFileName) {
     // Open output file and write decoded chars to it
     ofstream outFile;
     outFile.open(outFileName, ios::binary);
-    int numSymbsRead = 0;
 
+    int numSymbsRead = 0;
     // Loops till eof
     while (numSymbsRead < numSymbols) {
         // Writes decoded char into output file

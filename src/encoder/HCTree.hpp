@@ -20,7 +20,6 @@ using namespace std;
 const int size_vec = 256;
 int nbitsWritten;
 int numSymbols;
-int leafBitsWritten;
 
 /**
  * Class Name: HCTree
@@ -43,7 +42,6 @@ class HCTree {
         leaves = vector<HCNode*>(size_vec);
         numSymbols = 0;
         nbitsWritten = 0;
-	leafBitsWritten = 0;
     }
 
     /* Desctructor that calls the deleteAll method*/
@@ -51,12 +49,6 @@ class HCTree {
 
     /* Builds the HCTree by linking HCNodes*/
     void build(const vector<unsigned int>& freqs);
-
-    /* Writes the encoded leaf nodes to the BitOutputStream */
-    void writeLeafNodes(BitOutputStream& out);
-
-    /* Writes the encoded tree to the BitOutputStream*/
-    void encodedTree(BitOutputStream& out);
 
     /* Encodes a byte by traversing through the HCTree using BitOutputStream*/
     void encode(byte symbol, BitOutputStream& out) const;
